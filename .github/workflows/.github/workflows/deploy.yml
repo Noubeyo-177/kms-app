@@ -1,0 +1,18 @@
+name: Deploy Laravel App
+
+on:
+  push:
+    branches:
+      - main   # déclenche le déploiement à chaque push sur la branche main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Deploy to cPanel via SSH
+        run: |
+          ssh ${{ secrets.CPANEL_USER }}@${{ secrets.CPANEL_HOST }} "cd /home/username/app && git pull origin main && php artisan migrate --force"
